@@ -27,7 +27,7 @@ public class BankingResourceServiceImpl  implements BankingResourceService {
     @Override
     public SuccessResponse getCustomerById(Long id) {
         String url = customerApiBaseUrl + "/" + id;
-
+        ApiResponse<CustomerPayload> apiResponse = null;
         // Use exchange() with ParameterizedTypeReference for generic types
         ResponseEntity<ApiResponse<CustomerPayload>> response = restTemplate.exchange(
                 url,
@@ -37,7 +37,12 @@ public class BankingResourceServiceImpl  implements BankingResourceService {
                 }
         );
 
-        ApiResponse<CustomerPayload> apiResponse = response.getBody();
+        try{
+            apiResponse = response.getBody();
+        }catch(Exception ex){
+            throw new DataNotAvailableException("API returned success but payload is empty for customer id: " + id);
+        }
+
 
         if (apiResponse == null) {
             throw new DataNotAvailableException("No response received from customer API.");

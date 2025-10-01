@@ -36,8 +36,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<FailureResponse> handleGlobalException(Exception ex) {
         FailureResponse.ErrorMessage errmsg = new FailureResponse.ErrorMessage(
-                "An unexpected error occurred", // Arabic message
-                ex.getMessage()                  // English message
+                ex.getMessage(), // Arabic message
+                ex.getMessage()  // English message
         );
 
         FailureResponse failureResponse = new FailureResponse(
